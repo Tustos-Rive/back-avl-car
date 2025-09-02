@@ -115,7 +115,7 @@ class BTS:
         self._recalculate_nodes_axis(self.root)
     
     def _recalculate_nodes_axis(self, current_node):
-        if current_node:            
+        if current_node:
             current_node.x = current_node.parent.x - 50
 
             current_node.y = current_node.parent.y - 30
@@ -174,15 +174,15 @@ while running:
         # Resize Screen
         if event.type == pygame.VIDEORESIZE:
             # To can er-calculate the axis in x
-            tree_obstacles.root = None
+            # tree_obstacles.root = None
             new_w, new_h = pygame.display.get_window_size()
 
             screen = pygame.display.set_mode((new_w, new_h), flags=pygame.RESIZABLE)
             # Add again the nodes to the tree (For re-calculate the coordenates, i think that)
-            for value in obstacles_values_node:
-                tree_obstacles.insert(value)
+            # for value in obstacles_values_node:
+            #     tree_obstacles.insert(value)
 
-            # tree_obstacles.recalculate_nodes_axis()
+            tree_obstacles.recalculate_nodes_axis()
 
     screen.fill((255, 255, 255))
     draw_connections(tree_obstacles.root, screen)
