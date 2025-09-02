@@ -35,8 +35,8 @@ class Node:
 # root.left.right = Node(5, screen_width * 3 // 8, 250)
 
 root = Node(1, (screen_width - 50), screen_height // 2)
-root.left = Node(5, (root.x - 50), (root.y - 30))
-root.right = Node(5, (root.x - 50), (root.y + 30))
+root.left = Node(5, (root.x - 150), (root.y - 30))
+root.right = Node(5, (root.x - 150), (root.y + 30))
 
 # Function to draw connections
 def draw_connections(node, surface):
