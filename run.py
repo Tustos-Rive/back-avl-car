@@ -1,4 +1,4 @@
-from src.main import Run
+from src import main
 
 if __name__ == '__main__':
-    Run.run_testing_file("render_only_screen_width")
+    main.main()
