@@ -1,15 +1,14 @@
 class Car:
-    def __init__(self, sprite, battery:int, window_size:tuple[int, int], velocity:float = 5):
+    def __init__(self, battery:int, road_size:tuple[int, int], velocity:float = 5):
         # sprite -> img
         # Velocity -> float
         # battery -> int|float
         # collition_with_obstacle -> bool
-        self.sprite = sprite
         self.velocity = velocity
         self.battery = battery
         self.collition_with_obstacle = False
         self.pos_x = 100
-        self.pos_y = window_size[1] // 2
+        self.pos_y = road_size[1] // 2
 
     def run(self):
         # # Todo: SOLID
@@ -21,9 +20,6 @@ class Car:
         #     self.pos_x = 50
         # self.draw(screen)
         # # self._check_colide()
-        pass
-
-    def draw(self):
         pass
 
     def up(self):
