@@ -1,5 +1,4 @@
 from flask import Flask, jsonify
-from flask_socketio import SocketIO
 from flask_cors import CORS
 from src.models.car import Car
 from src.models.node import Node
@@ -21,7 +20,7 @@ class Main:
         self.AVLTree = AVLTree()
         self.Road = Road()
         self.Node = Node()
-        self.Car = Car(0, (0,0))
+        self.Car = Car()
 
         # Socket Main Manager
         self.socketio = None

@@ -1,7 +1,7 @@
 from typing import Any
 from flask import Flask
 from flask_socketio import SocketIO, emit
-from src.models.response_socket import ResponseSocket
+from src.models.responses import ResponseSocket
 
 class SocketManager(SocketIO):
     # def __init__(self, socketio: SocketIO, app: Flask):

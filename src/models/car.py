@@ -1,5 +1,5 @@
 class Car:
-    def __init__(self, battery:int, road_size:tuple[int, int], velocity:float = 5):
+    def __init__(self, battery:int = 0, road_size:tuple[int, int] = (0, 0), velocity:float = 5):
         # sprite -> img
         # Velocity -> float
         # battery -> int|float
