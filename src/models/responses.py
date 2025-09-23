@@ -29,7 +29,7 @@ class BaseFlaskResponse:
         }
 
 class ReturnModels:
-    def __init__(self, message: str = '', ok: bool = True, data: dict = None,error: Any = None):
+    def __init__(self, message: str = '', ok: bool = True, data: Any = None,error: Any = None):
         self.message = message
         self.ok = ok
         self.data = data
