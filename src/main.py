@@ -23,7 +23,7 @@ class Main:
         # Models instances
         self.AVLTree = AVLTree()
         self.Road = Road()
-        self.Node = Node()
+        # self.Node = Node()
         self.Car = Car()
 
         # Socket Main Manager
@@ -37,13 +37,14 @@ class Main:
         CORS(self.app, origins=self.origins, supports_credentials=self.supports_credentials)
         self.socketio = SocketManager(self.app, self.origins) # SocketIO(app, "*")
         
+        # Call sockets managers
+        SocketAVLTree(self.socketio, self.AVLTree)
+        
         # Call routes
         MainRoute(self.app, jsonify)
         AVLRouter(self.app, jsonify)
         DataRouter(self.app, jsonify, self.data_folder)
         
-        # Call sockets managers
-        SocketAVLTree(self.socketio, self.AVLTree)
 
     def run_main(self) -> None:
         # SocketAVLTree(self.app, self.origins, self.AVLTree)
