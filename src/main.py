@@ -42,7 +42,7 @@ class Main:
         
         # Call routes
         MainRoute(self.app, jsonify)
-        AVLRouter(self.app, jsonify)
+        AVLRouter(self.app, jsonify, self.AVLTree)
         DataRouter(self.app, jsonify, self.data_folder)
         
 

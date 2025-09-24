@@ -12,8 +12,8 @@ class DataRouter(Router):
         self.__register_routes()
 
     def __register_routes(self) -> None:
-        self.register_routes("/data", self.__home_data)
-        self.register_routes("/data/json/<filename>", self.__get_file_json)
+        self.register_routes("/data", self.__home_data, 'GET')
+        self.register_routes("/data/json/<filename>", self.__get_file_json, 'POST', 'GET')
 
     def __home_data(self) -> Response:
         return self.controller.get_home()

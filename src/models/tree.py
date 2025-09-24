@@ -25,6 +25,8 @@ class AVLTree:
                 self.root = new_node
             else:
                 self.root = self._insert(self.root, new_node)
+                # Add the obstacle ID, requires more next GUIÑO GUIÑO
+                response.data = self.root.value.id
         return response
 
     def _insert(self, current_node: Node, new_node: Node) -> Node:
@@ -138,6 +140,8 @@ class AVLTree:
         
         return response
 
+    # FIXME: All the roads have the same error!, by some cause/reason! or grabage colector :)
+    # The list "road" KEEP in the RAM! and it do a fuck "road.append(road)" -> :|
     def __inorder(self, current_node: Node, road: list[int] = []):
         # when current is a leaft, when call again, LEAFT Not have childs...
         if current_node:
