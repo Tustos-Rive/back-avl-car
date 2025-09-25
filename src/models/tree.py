@@ -1,6 +1,7 @@
 from src.models.node import Node
 from src.models.obstacle import Obstacle
 from src.models.responses import ReturnModels
+from src.utils.others_utils import Utils
 
 # def setObstacle(data: dict, *args) -> None:
 #     print(f'Obstacle added: {data}, and get this args: ', *args)
@@ -25,8 +26,9 @@ class AVLTree:
                 self.root = new_node
             else:
                 self.root = self._insert(self.root, new_node)
-                # Add the obstacle ID, requires more next GUIÑO GUIÑO
-                response.data = self.root.value.id
+            
+            # Add the obstacle ID, requires more next GUIÑO GUIÑO
+            response.data = new_node.value.id
         return response
 
     def _insert(self, current_node: Node, new_node: Node) -> Node:
@@ -106,6 +108,8 @@ class AVLTree:
             self._delete(node_to_delete)
 
     def _delete(self, node_to_delete: Node):
+        # FIXME: Missing rebalance tree when remove/delete
+
         # Case 1: node is a leaf (no children)
         if not node_to_delete.left and not node_to_delete.right:
             self.changeNodePosition(node_to_delete, None)
@@ -136,13 +140,12 @@ class AVLTree:
             response.message = "Don't was possible get road"
             response.error = 'Tree is empty!'
         else:
-            response.data = self.__inorder(self.root)
+            road = []
+            response.data = self.__inorder(self.root, road)
         
         return response
 
-    # FIXME: All the roads have the same error!, by some cause/reason! or grabage colector :)
-    # The list "road" KEEP in the RAM! and it do a fuck "road.append(road)" -> :|
-    def __inorder(self, current_node: Node, road: list[int] = []):
+    def __inorder(self, current_node: Node, road: list[int]):
         # when current is a leaft, when call again, LEAFT Not have childs...
         if current_node:
             if current_node.left:
@@ -164,11 +167,12 @@ class AVLTree:
             response.message = "Don't was possible get road"
             response.error = 'Tree is empty!'
         else:
-            response.data = self.__posorder(self.root)
+            road = []
+            response.data = self.__posorder(self.root, road)
         
         return response
 
-    def __posorder(self, current_node: Node, road: list[int] = []):
+    def __posorder(self, current_node: Node, road: list[int]):
         # when current is a leaft, when call again, LEAFT Not have childs...
         if current_node:
             if current_node.left:
@@ -190,11 +194,12 @@ class AVLTree:
             response.message = "Don't was possible get road"
             response.error = 'Tree is empty!'
         else:
-            response.data = self.__preorder(self.root)
+            road = []
+            response.data = self.__preorder(self.root, road)
         
         return response
 
-    def __preorder(self, current_node: Node, road: list[int] = []):
+    def __preorder(self, current_node: Node, road: list[int]):
         # when current is a leaft, when call again, LEAFT Not have childs...
         if current_node:
             # Add the node value to the road
@@ -312,3 +317,7 @@ class AVLTree:
             if node.left:
                 new_prefix = prefix + ("    " if is_left else "│   ")
                 self.print_tree(node.left, new_prefix, True)
+
+    # @Utils.extract_tree_childs
+    def to_dict(self):
+        return Utils.extract_tree_childs(self.root)
