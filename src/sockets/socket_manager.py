@@ -41,18 +41,19 @@ class SocketManager(SocketIO):
 
         # Call a intermediate function
         # Ever send the response reference to modify it's values, too send msg, data received!!!
-        if callback:
-            if calback_args:
-                # Callback said that need the control of EMIT method
-                if need_control_emit:
-                    callback(msg, response, emit_name, self.namespace, *calback_args)
-                else:
-                    callback(msg, response*calback_args)
-            else:
-                if need_control_emit:
-                    callback(msg, response, emit_name, self.namespace)
-                else:
-                    callback(msg, response)
+        # Callback said that need the control of EMIT method
+        if callback and calback_args and need_control_emit:
+            # emit + args
+            callback(msg, response, emit_name, self.namespace, *calback_args)
+        elif callback and calback_args and not need_control_emit:
+            # args
+            callback(msg, response, *calback_args)
+        elif callback and need_control_emit:
+            # emit
+            callback(msg, response, emit_name, self.namespace)
+        elif callback:
+            # nothing additional
+            callback(msg, response)
         
         if not need_control_emit:
             # Emit event to client, said that event is handled OK! or !OK

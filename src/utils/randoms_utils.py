@@ -25,8 +25,8 @@ class RandomsUtils:
     def random_letter(capital: bool = True) -> str:
         letter, __randint = '', -1
         
-        range_ascii_capital = [65, 91]
-        range_ascii = [97, 123]
+        range_ascii_capital = [65, 90]
+        range_ascii = [97, 122]
 
         # CAPITAL letters by default
         __default = range_ascii_capital
