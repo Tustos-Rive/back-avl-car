@@ -2,7 +2,6 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from src.models.car import Car
 from src.models.node import Node
-from src.models.road import Road
 from src.models.tree import AVLTree
 from src.routers.AVL_router import AVLRouter
 from src.routers.Data_router import DataRouter
@@ -22,7 +21,6 @@ class Main:
 
         # Models instances
         self.AVLTree = AVLTree()
-        self.Road = Road()
         # self.Node = Node()
         self.Car = Car()
 

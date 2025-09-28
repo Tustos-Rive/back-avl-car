@@ -3,12 +3,12 @@ from src.models.obstacle import Obstacle
 from src.models.responses import ReturnModels
 from src.utils.others_utils import Utils
 
-# def setObstacle(data: dict, *args) -> None:
-#     print(f'Obstacle added: {data}, and get this args: ', *args)
-
 class AVLTree:
     def __init__(self) -> None:
         self.root: Node | None = None
+
+    def reset(self) -> None:
+        self.root = None
 
     # Insert a new value into the BST
     def insert(self, value: Obstacle) -> ReturnModels:
@@ -107,31 +107,107 @@ class AVLTree:
         if node_to_delete:
             self._delete(node_to_delete)
 
-    def _delete(self, node_to_delete: Node):
-        # FIXME: Missing rebalance tree when remove/delete
+    # TODO: This is the original _delete()
+    # def _delete(self, node_to_delete: Node):
+    #     # FIXME: Missing rebalance tree when remove/delete
 
+    #     # Case 1: node is a leaf (no children)
+    #     if not node_to_delete.left and not node_to_delete.right:
+    #         self.changeNodePosition(node_to_delete, None)
+    #         return
+
+    #     # Case 2: node has two children
+    #     if node_to_delete.left and node_to_delete.right:
+    #         predecessor: Node = self._getPredecessor(node_to_delete)
+    #         if predecessor.parent != node_to_delete:  # predecessor is not a direct child
+    #             self.changeNodePosition(predecessor, predecessor.left)
+    #             predecessor.left = node_to_delete.left
+    #             predecessor.left.parent = predecessor
+    #         self.changeNodePosition(node_to_delete, predecessor)
+    #         predecessor.right = node_to_delete.right
+    #         predecessor.right.parent = predecessor
+    #         return
+
+    #     # Case 3: node has only one child
+    #     if node_to_delete.left:
+    #         self.changeNodePosition(node_to_delete, node_to_delete.left)
+    #     else:
+    #         self.changeNodePosition(node_to_delete, node_to_delete.right)
+
+    def _rebalance_up(self, start: Node | None):
+        """Rebalance from `start` to root. Call with the parent of node removed!"""
+        current = start
+        while current:
+            # Update height before rebalance
+            self.update_height(current)
+    
+            # _rebalance return the new root of subtree in 'current'
+            new_sub_root = self._rebalance(current)
+    
+            parent = current.parent  # Save original parent
+    
+            # Add new_sub_root to parent (or update self.root if parent is None)
+            if parent is None:
+                self.root = new_sub_root
+                if new_sub_root:
+                    new_sub_root.parent = None
+            else:
+                if parent.left is current:
+                    parent.left = new_sub_root
+                else:
+                    parent.right = new_sub_root
+                if new_sub_root:
+                    new_sub_root.parent = parent
+    
+            # Up: from parent of new subtree
+            current = new_sub_root.parent if new_sub_root else parent
+
+    
+    def _delete(self, node_to_delete: Node):
         # Case 1: node is a leaf (no children)
         if not node_to_delete.left and not node_to_delete.right:
+            parent = node_to_delete.parent
             self.changeNodePosition(node_to_delete, None)
+            self._rebalance_up(parent)
             return
 
         # Case 2: node has two children
         if node_to_delete.left and node_to_delete.right:
             predecessor: Node = self._getPredecessor(node_to_delete)
+            
             if predecessor.parent != node_to_delete:  # predecessor is not a direct child
+                predecessor_old_parent = predecessor.parent
+                # quitar predecessor de su sitio original
                 self.changeNodePosition(predecessor, predecessor.left)
+                # enlazar la izquierda del predecessor al espacio del node_to_delete
                 predecessor.left = node_to_delete.left
                 predecessor.left.parent = predecessor
-            self.changeNodePosition(node_to_delete, predecessor)
-            predecessor.right = node_to_delete.right
-            predecessor.right.parent = predecessor
+                
+                # reemplazar node_to_delete por predecessor
+                self.changeNodePosition(node_to_delete, predecessor)
+                predecessor.right = node_to_delete.right
+                predecessor.right.parent = predecessor
+                
+                # rebalancear desde donde estaba originalmente el predecessor
+                self._rebalance_up(predecessor_old_parent)
+            else:
+                # predecessor es hijo directo, solo reemplazar
+                self.changeNodePosition(node_to_delete, predecessor)
+                predecessor.right = node_to_delete.right
+                predecessor.right.parent = predecessor
+                
+                # rebalancear desde el predecessor (ahora en la posición del nodo eliminado)
+                self._rebalance_up(predecessor.parent)
             return
 
         # Case 3: node has only one child
+        parent = node_to_delete.parent
         if node_to_delete.left:
             self.changeNodePosition(node_to_delete, node_to_delete.left)
         else:
             self.changeNodePosition(node_to_delete, node_to_delete.right)
+        self._rebalance_up(parent)
+        return
 
     # Inorder traversal (left → root → right)
     def inorder(self):
@@ -319,5 +395,4 @@ class AVLTree:
                 self.print_tree(node.left, new_prefix, True)
 
     # @Utils.extract_tree_childs
-    def to_dict(self):
-        return Utils.extract_tree_childs(self.root)
+    def to_dict(self): return Utils.extract_tree_childs(self.root)

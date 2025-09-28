@@ -35,6 +35,8 @@ class AVLController:
             response.error = 'Has been ocurred something when try add node!'
             response.status = 500
             response.error = e.__str__()
+
+        print(f'Data to send, add_node => {response.to_dict()}')
         
         self.avl.print_tree(self.avl.root)
         return self.jsonify(response.to_dict())

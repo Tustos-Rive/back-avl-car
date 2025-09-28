@@ -7,13 +7,29 @@ from src.models.tree import AVLTree
 if __name__ == '__main__':
     main = Main("*")
     main.socketio.run(main.app, host='localhost', port=4500, debug=True)
-    # obstacles = [Obstacle(randint(50, 200), randint(50, 200), randint(1, 11)) for _ in range(30)]
-    # # obstacles = [Obstacle(13, 5, 3), Obstacle(2, 6, 3),Obstacle(13, 6, 3), Obstacle(4, 5, 3)]
+    # obstacles = [Obstacle(randint(50, 200), randint(50, 200), randint(1, 11)) for _ in range(10)]
+    # obstacles = [Obstacle(13, 5, 3), Obstacle(2, 6, 3),Obstacle(13, 6, 3), Obstacle(4, 5, 3)]
 
     # tree = AVLTree()
 
     # for a in obstacles:
     #     inst = tree.insert(a)
+
+    # # tree.to_dict(tree.root)
+    # # print(tree.to_dict())
+    # tree.print_tree(tree.root)
+    # print(tree.search(Obstacle(2, 6, 3)).data.to_dict())
+
+    # tree.delete(Obstacle(2, 6, 3))
+    
+    # print('\n--------------------------\n')
+
+    # tree.print_tree(tree.root)
+
+    # print(tree.to_dict())
+
+
+    # print(tree.root.to_dict())
 
     # ino, pre, pos = [], [], []
 
@@ -25,7 +41,7 @@ if __name__ == '__main__':
     # for b in inorder:
     #     print(b.to_dict(), end=' ')
 
-    # print("----")
+    # print("----\n")
     
     # print("PRE", end=': ')
     # for b in preorder:
@@ -47,3 +63,9 @@ if __name__ == '__main__':
     # tree.delete(node_value)
 
     # tree.print_tree(tree.root)
+
+    # Call again to see if error keep!
+    # inorder = tree.inorder().data
+    # print("IN", end=': ')
+    # for b in inorder:
+    #     print(b.to_dict(), end=' ')

@@ -18,7 +18,7 @@ class Node:
             'height': self.height
         }
 
-    def __get_node_dict(self, is_right: bool = False, is_parent: bool = False) -> dict | None:
+    def __get_node_dict(self, is_right: bool = False) -> dict | None:
         __return = None
         
         if not is_right and self.left:
