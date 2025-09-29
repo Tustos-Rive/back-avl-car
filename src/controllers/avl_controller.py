@@ -3,6 +3,7 @@ from flask import Response
 from src.models.obstacle import Obstacle
 from src.models.responses import BaseFlaskResponse
 from src.models.tree import AVLTree
+from src.utils.others_utils import Utils
 
 class AVLController:
     def __init__(self, jsonify: Any, tree_model: AVLTree):
@@ -63,4 +64,34 @@ class AVLController:
         print(f'Data to send, remove_node => {response.to_dict()}')
         
         self.avl.print_tree(self.avl.root)
+        return self.jsonify(response.to_dict())
+
+    def set_configs(self, data: dict) -> Response:
+        response = BaseFlaskResponse(f"The configurations has been added succesfully!")
+        validations = Utils.validate_json_configs(data)
+
+        if validations.get('error'):
+            response.error = validations.get('error')
+            response.ok = False
+            response.status = 400
+            response.message = "There are some errors in the sent data!"
+        else:
+            obstacles = data.get('obstacles')
+            # TODO: Set configs inside here, backend...
+            configs = data.get('configs')
+            data = []
+
+            for obstacle in obstacles:
+                __new_obstacle = Obstacle(obstacle.get('x'), obstacle.get('y'), obstacle.get('type_id'))
+                # data.append(self.avl.insert(__new_obstacle).data)
+                __insert = self.avl.insert(__new_obstacle)
+                if __insert.ok:
+                    data.append(__insert.data)
+            
+            if len(data) == 0:
+                response.ok = False
+                response.status = 400
+                response.message = __insert.message
+            else:
+                response.data = data
         return self.jsonify(response.to_dict())
