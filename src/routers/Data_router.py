@@ -1,5 +1,5 @@
 from typing import Any
-from flask import Flask, Response
+from flask import Flask, Response, request
 from src.controllers.data_controller import DataController
 from src.models.responses import BaseFlaskResponse
 from src.routers.Router import Router
@@ -13,7 +13,7 @@ class DataRouter(Router):
 
     def __register_routes(self) -> None:
         self.register_routes("/data", self.__home_data, 'GET')
-        self.register_routes("/data/json/<filename>", self.__get_file_json, 'POST', 'GET')
+        self.register_routes("/data/json/<filename>", self.__get_file_json, 'POST', 'OPTIONS', 'GET')
 
     def __home_data(self) -> Response:
         return self.controller.get_home()
