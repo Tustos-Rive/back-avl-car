@@ -13,7 +13,7 @@ class AVLController:
         response = BaseFlaskResponse('Welcome to AVL section!')
         return self.jsonify(response.to_dict())
     
-    def add_node(self, data) -> Response:
+    def add_node(self, data: dict) -> Response:
         response = BaseFlaskResponse()
 
         try:
@@ -37,6 +37,30 @@ class AVLController:
             response.error = e.__str__()
 
         print(f'Data to send, add_node => {response.to_dict()}')
+        
+        self.avl.print_tree(self.avl.root)
+        return self.jsonify(response.to_dict())
+
+    def remove_node(self, data: dict):
+        response = BaseFlaskResponse()
+
+        try:
+            __obstacle = Obstacle(data.get('x'), data.get('y'), data.get('type_id'))
+            __remove = self.avl.delete(__obstacle)
+
+            response.message = __remove.message
+            
+            if not __remove.ok:
+                response.status = 400
+            
+            response.ok = __remove.ok
+        except Exception as e:
+            print('Exception Catched: ', e)
+            response.error = 'Has been ocurred something when try remove node!'
+            response.status = 500
+            response.error = e.__str__()
+
+        print(f'Data to send, remove_node => {response.to_dict()}')
         
         self.avl.print_tree(self.avl.root)
         return self.jsonify(response.to_dict())

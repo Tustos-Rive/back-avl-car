@@ -18,7 +18,8 @@ class SocketAVLTree:
         # Insert obstacle, receive (msg, response) because i don't send any *args
         # I Think!
         self.socketio.register_handler(False, "reset_avl", "avl_reseted", self.controller.emit_avl_reseted, True)
-        self.socketio.register_handler(False, "remove_obstacle", "obstacle_removed", self.controller.emit_obstacle_removed, True)
+        # self.socketio.register_handler(False, "remove_obstacle", "obstacle_removed", self.controller.emit_obstacle_removed, True)
+        self.socketio.register_handler(False, "remove_obstacle", "avl_tree_balanced", self.controller.emit_obstacle_removed, True)
         # self.socketio.register_handler(False, "insert_obstacle", "obstacles_inserted", self.tree.setObstacle)
         self.socketio.register_handler(False, "get_tree_avl", "avl_tree_balanced", self.controller.get_tree_avl, True)
         self.socketio.register_handler(False, "road_preorder", "preorder", self.controller.emit_road, True, "preorder")

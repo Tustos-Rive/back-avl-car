@@ -57,15 +57,32 @@ class SocketAVLController:
 
         emit(emit_name, response.to_dict(), namespace=namespace)
 
-    def emit_obstacle_removed(self, msg: Any, response: ResponseSocket, emit_name: str, namespace: str) -> None:
+    def emit_obstacle_removed(self, msg: dict, response: ResponseSocket, emit_name: str, namespace: str) -> None:
         # TODO: Test this, send from client a event remove
+        # try:
+        #     self.avl.delete(msg)
+        #     response.msg = 'You fuck obstacle has been removed! madafaka :)'
+        #     response.data = self.avl
+        # except Exception as e:
+        #     response.msg = 'Not was possible remode the obstacle'
+        #     response.error = e.__str__()
         try:
-            self.avl.delete(msg)
-            response.msg = 'You fuck obstacle has been removed! madafaka :)'
-            response.data = self.avl
+            __obstacle = Obstacle(msg.get('x'), msg.get('y'), msg.get('type_id'))
+            __remove = self.avl.delete(__obstacle)
+
+            response.message = __remove.message
+            
+            if not __remove.ok:
+                response.status = 400
+            
+            response.ok = __remove.ok
         except Exception as e:
-            response.msg = 'Not was possible remode the obstacle'
+            print('Exception Catched: ', e)
+            response.error = 'Has been ocurred something when try remove node!'
+            response.status = 500
             response.error = e.__str__()
+
+        print(f'Data to send, remove_node => {response.to_dict()}')
         
         emit(emit_name, response.to_dict(), namespace=namespace)
 

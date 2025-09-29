@@ -15,7 +15,8 @@ class AVLRouter(Router):
 
     def __register_routes(self) -> None:
         self.register_routes(f"{self.endpoint}", self.__home_avl)
-        self.register_routes(f"{self.endpoint}/node/add", self.__node_add, 'POST', 'GET', 'OPTIONS', 'HEAD')
+        self.register_routes(f"{self.endpoint}/node/add", self.__node_add, 'POST', 'OPTIONS', 'HEAD')
+        self.register_routes(f"{self.endpoint}/node/remove", self.__node_remove, 'POST', 'OPTIONS', 'HEAD')
 
     def __home_avl(self) -> Response:
         return self.controller.get_home()
@@ -23,3 +24,7 @@ class AVLRouter(Router):
     def __node_add(self) -> Response:
         body = request.json
         return self.controller.add_node(body)
+    
+    def __node_remove(self) -> Response:
+        body = request.json
+        return self.controller.remove_node(body)
